@@ -8,7 +8,8 @@ export const theme = {
         appBg: '#202020',
         tableBg: '#303030',
         borderTable: '#fff',
-        headerTableBg: '#C4C4C4'
+        headerTableBg: '#C4C4C4',
+        modalBg: '#626262'
     },
     fonts: {
         defaultSize: '1rem',

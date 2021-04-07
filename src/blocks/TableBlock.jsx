@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {theme} from "../theme/theme";
 
-const {colors, fonts} = theme
+const {colors} = theme
 
 export const TableBlock = styled.div`
   display: flex;
@@ -9,5 +9,16 @@ export const TableBlock = styled.div`
   align-items: center;
   width: 100%;
   border-bottom: 1px solid ${colors.borderTable};
+ :hover {
+  background: ${colors.modalBg};
+ }
+ :active {
+  background: ${colors.modalBg};
+ }
+ :first-child:hover {
+  background: ${colors.headerTableBg};
+ }
+ 
+
  ${props => props.styles || null}
 `

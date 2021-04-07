@@ -3,18 +3,17 @@ import {theme} from "../theme/theme";
 
 const {colors, fonts} = theme
 
-export const TableBlockItem = styled.div`
-  width: calc(100% / ${props => props.size});
-  padding: .5rem;
-  border-left: 1px solid ${colors.borderTable};
-  color: ${fonts.formColor};
+export const ModalBlockItem = styled.div`
+  width: 25%;
+  padding: .2rem;
+  border-left: 1px solid #000;
+  color: #000;
   text-align: center;
   font-weight: ${fonts.defaultWeight};
-  cursor: pointer;
+  font-size: 12px;
   :first-child {
-    width: 30%;
     border-left: none;
-    cursor: auto;
   };
+  
   ${props => props.styles || null}
 `
