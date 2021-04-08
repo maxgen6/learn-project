@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Table} from "../blocks/Table";
 import {TableBlock} from "../blocks/TableBlock";
 import {TableBlockItem} from "../blocks/TableBlockItem";
-import {usersList} from "../arr";
 import {theme} from "../congif/theme";
 import {Modal} from "./Modal";
 import {ModalBlock} from "../blocks/ModalBlock";
@@ -10,7 +9,7 @@ import {ModalBlockItem} from "../blocks/ModalBlockItem";
 import axios from "axios";
 import {api} from "../congif/api";
 
-const userList = usersList
+
 
 const {colors} = theme
 const {url} = api
@@ -42,7 +41,6 @@ export default class Main extends Component {
    * @param data {Object} - Get params about user and week
    */
   modalParams = (e, data) => {
-    console.log(data)
     let x = e.target.getBoundingClientRect().x
     if ((document.documentElement.clientWidth - e.target.getBoundingClientRect().x) < 450) {
       x = x - 390
@@ -123,9 +121,6 @@ export default class Main extends Component {
 
 
   render() {
-    Object.values(this.state.activeUser).map(item => {
-      console.log(item)
-    })
     return (
       <Table>
         <TableBlock style={styles}>
