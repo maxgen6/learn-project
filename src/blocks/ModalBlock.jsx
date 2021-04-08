@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {theme} from "../theme/theme";
-
-const {colors, fonts} = theme
+// import {theme} from "../congif/theme";
+//
+// const {colors, fonts} = theme
 
 export const ModalBlock = styled.div`
   display: flex;

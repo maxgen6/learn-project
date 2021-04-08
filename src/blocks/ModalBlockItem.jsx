@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {theme} from "../theme/theme";
+import {theme} from "../congif/theme";
 
-const {colors, fonts} = theme
+const {fonts} = theme
 
 export const ModalBlockItem = styled.div`
   width: 25%;

@@ -2,20 +2,24 @@ import React, {Component} from 'react';
 import {FormBlock} from "../blocks/FormBlock";
 import {Input} from "../blocks/Input";
 import {LargeButton} from "../blocks/Button";
+import axios from "axios";
+import {api} from "../congif/api";
 
 const styles = {
     "margin-bottom": "25px"
 }
 
+const {url} = api
+
 export default class Login extends Component {
     state = {
-        login: '',
+        email: '',
         password: ''
     }
 
     inputLogin = e => {
         e.preventDefault()
-        this.setState({ login: e.target.value})
+        this.setState({ email: e.target.value})
     }
 
     inputPassword = e => {
@@ -26,11 +30,25 @@ export default class Login extends Component {
     isLogin = e => {
 
         e.preventDefault()
-        const login = this.state.login
+        const email = this.state.email
         const password = this.state.password
-        if(login === 'qwe@mail.ru' && password === '123') {
-            this.props.isHandlerLogin()
-            this.props.history.push("/")
+
+        if (email && password.length > 5) {
+            const user = {
+                email: email,
+                password: password
+            }
+            axios.post(`${url}/signin`, user)
+                .then(res => {
+                    this.props.isHandlerLogin()
+                    this.props.history.push('/')
+                })
+                .catch(err => {
+                    if((err.response.status === 400) || (err.response.status === 500)) {
+                        alert('Неправильные логин или пароль!')
+                    }
+                })
+                .finally(() => this.setState({ email: '', password: '' }))
         }
     }
 

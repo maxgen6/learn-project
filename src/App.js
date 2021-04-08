@@ -40,7 +40,7 @@ export default class App extends Component{
                         />
                         <Route
                             path="/registration"
-                            render={() => <Registration />}
+                            render={(props) => <Registration isHandlerLogin={this.isHandlerLogin} {...props}/>}
                         />
                     </Switch>
                 </Container>

@@ -3,10 +3,13 @@ import axios from "axios";
 import {FormBlock} from "../blocks/FormBlock";
 import {Input} from "../blocks/Input";
 import {LargeButton} from "../blocks/Button";
+import {api} from "../congif/api";
 
 const styles = {
     "margin-bottom": "25px"
 }
+
+const {url} = api
 
 export default class Registration extends Component {
     state = {
@@ -25,12 +28,17 @@ export default class Registration extends Component {
                 password: password
             }
 
-            axios.post('https://rude-panda-17.loca.lt/signup', user)
+            axios.post(`${url}/signup`, user)
                 .then(res => {
-                    console.log(res.status)
-                    console.log(res.data)
+                    this.props.history.push('/login')
                 })
-
+                .catch(err => {
+                    if(err.response.status === 409){
+                        alert('Такой email уже зарегистрирован')
+                    } else if (err.response.status === 400) {
+                        alert('Неккоретный email, попробуйте еще раз!')
+                    }
+                })
         }
     }
 
