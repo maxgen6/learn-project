@@ -31,6 +31,7 @@ export default class Main extends Component {
 
   async componentWillMount() {
     const res = await axios.get(`${url}/data`)
+    console.log(res)
     const user = res.data
     this.setState({user})
   }

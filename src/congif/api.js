@@ -1,3 +1,4 @@
 export const api = {
-    url: 'https://happy-snail-0.loca.lt/'
+  url: 'http://localhost:49216'
 }
+

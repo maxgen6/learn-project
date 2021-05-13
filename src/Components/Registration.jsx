@@ -30,7 +30,7 @@ export default class Registration extends Component {
 
             axios.post(`${url}/signup`, user)
                 .then(res => {
-                    this.props.history.push('/login')
+                    this.props.history.push('/')
                 })
                 .catch(err => {
                     if(err.response.status === 409){
