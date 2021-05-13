@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Table} from "../blocks/Table";
 import {TableBlock} from "../blocks/TableBlock";
 import {TableBlockItem} from "../blocks/TableBlockItem";
@@ -19,52 +19,63 @@ const styles = {
   "cursor": "auto"
 }
 
-export default class Main extends Component {
-  state = {
-    user: null,
-    activeUser: '',
-    x: null,
-    y: null,
-    showModal: false,
-    position: null
-  }
+export default function Main() {
+  // state = {
+  //   user: null,
+  //   activeUser: '',
+  //   x: null,
+  //   y: null,
+  //   showModal: false,
+  //   position: null
+  // }
 
-  async componentWillMount() {
+  const [user, setUser] = useState(null)
+  const [activeUser, setActiveUser] = useState('')
+  const [coordinationX, setCoordinationX] = useState(null)
+  const [coordinationY, setCoordinationY] = useState(null)
+  const [positions, setPositions] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+
+
+  // async componentWillMount() {
+  //   const res = await axios.get(`${url}/data`)
+  //   const user = res.data
+  //   this.setState({user})
+  // }
+
+  useEffect(async () => {
     const res = await axios.get(`${url}/data`)
-    console.log(res)
     const user = res.data
-    this.setState({user})
-  }
+    setUser(user)
+  }, [])
 
   /**
    * Callback function, did params for Modal (coordination, showModal and position)
    * @param e {event} - Click event
    * @param data {Object} - Get params about user and week
    */
-  modalParams = (e, data) => {
+  const modalParams = (e, data) => {
     let x = e.target.getBoundingClientRect().x
     if ((document.documentElement.clientWidth - e.target.getBoundingClientRect().x) < 450) {
       x = x - 390
-      this.setState({position: "after"})
+      setPositions('after')
     } else {
-      this.setState({position: "before"})
+      setPositions('before')
     }
-    const showModal = this.state.showModal
-    this.setState({
-      activeUser: data,
-      x: x,
-      y: e.target.getBoundingClientRect().y,
-      showModal: !showModal
-    })
+    // const showModal = showModal
+    setActiveUser(data);
+    setCoordinationX(x);
+    setCoordinationY(e.target.getBoundingClientRect().y);
+    setShowModal(!showModal)
   }
 
 
   /**
    * Callback function, sorts user and rendering them in component TableBlock
    */
-  getUser = () => {
-    return this.state.user
-      ? this.state.user.map((user, index) => {
+  const getUser = () => {
+    return user
+      ? user.map((user, index) => {
         let arr = []
         let data = null
         let modalData = []
@@ -92,7 +103,7 @@ export default class Main extends Component {
             <TableBlockItem
               size={arr.length - 1}
               key={item[0] + `${Math.random()}`}
-              onClick={e => this.modalParams(e, modalData[index - 1])}
+              onClick={e => modalParams(e, modalData[index - 1])}
             >{item}</TableBlockItem>
           ))}
         </TableBlock>
@@ -100,9 +111,9 @@ export default class Main extends Component {
       : null
   }
 
-  getDate = () => {
-    return this.state.user
-      ? this.state.user[0].map(item => {
+  const getDate = () => {
+    return user
+      ? user[0].map(item => {
         let arr = []
         if (item.weeks) {
           item.weeks.map(val => {
@@ -121,20 +132,19 @@ export default class Main extends Component {
   }
 
 
-  render() {
     return (
       <Table>
         <TableBlock style={styles}>
           <TableBlockItem>Сотрудник</TableBlockItem>
-          {this.getDate()}
+          {getDate()}
         </TableBlock>
 
-        {this.getUser()}
-        {this.state.showModal ?
+        {getUser()}
+        {showModal ?
           <Modal
-            coordinationX={this.state.x}
-            coordinationY={this.state.y}
-            position={this.state.position}
+            coordinationX={coordinationX}
+            coordinationY={coordinationY}
+            position={positions}
           >
             <ModalBlock key={'qw'}>
               <ModalBlockItem key={'ad'}>customer</ModalBlockItem>
@@ -142,7 +152,7 @@ export default class Main extends Component {
               <ModalBlockItem key={'d'}>payment</ModalBlockItem>
               <ModalBlockItem key={'f'}>timePresent</ModalBlockItem>
             </ModalBlock>
-            {Object.values(this.state.activeUser).map((item, index, arr) => {
+            {Object.values(activeUser).map((item, index, arr) => {
               return (
                 <ModalBlock key={index + 'z'}>
                   <ModalBlockItem key={index + 'aa'}>{item.customer}</ModalBlockItem>
@@ -158,6 +168,5 @@ export default class Main extends Component {
       </Table>
 
     );
-  }
 }
 

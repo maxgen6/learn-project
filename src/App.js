@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
 
 import {AppWrapper} from "./blocks/AppWrapper";
@@ -9,44 +9,46 @@ import Registration from "./Components/Registration";
 import Main from "./Components/Main";
 
 
-export default class App extends Component{
-    state = {
-        isLogin: localStorage.getItem('login') || false
-    }
+export default function App() {
+  // state = {
+  //   isLogin: localStorage.getItem('login') || false
+  // }
 
-    isHandlerLogin = () => {
-        this.setState({ isLogin: true})
-        localStorage.setItem('login', 'true')
-    }
+  const [isLogin, setIsLogin] = useState(localStorage.getItem('login') || false)
 
-    isLogout = () => {
-        this.setState({ isLogin: false })
-        localStorage.removeItem('login')
-    }
+  const isHandlerLogin = () => {
+    setIsLogin(true)
+    // this.setState({isLogin: true})
+    localStorage.setItem('login', 'true')
+  }
 
-    render() {
-        return (
-            <AppWrapper>
-                <Header isLogin={this.state.isLogin} isLogout={this.isLogout}/>
-                <Container>
-                    <Switch>
-                        <Route path="/" exact
-                               render={() => this.state.isLogin ? <Main /> : <Redirect to="/login" /> }
-                        />
-                        <Route
-                            path="/login"
-                            render={(props) => this.state.isLogin ?
-                                <Redirect to="/" /> : <Login isHandlerLogin={this.isHandlerLogin} {...props}/> }
-                        />
-                        <Route
-                            path="/registration"
-                            render={(props) => <Registration isHandlerLogin={this.isHandlerLogin} {...props}/>}
-                        />
-                    </Switch>
-                </Container>
-            </AppWrapper>
-        );
-    }
+  const isLogout = () => {
+    setIsLogin(false)
+    // this.setState({isLogin: false})
+    localStorage.removeItem('login')
+  }
+
+    return (
+      <AppWrapper>
+        <Header isLogin={isLogin} isLogout={isLogout}/>
+        <Container>
+          <Switch>
+            <Route path="/" exact
+                   render={() => isLogin ? <Main/> : <Redirect to="/login"/>}
+            />
+            <Route
+              path="/login"
+              render={(props) => isLogin ?
+                <Redirect to="/"/> : <Login isHandlerLogin={isHandlerLogin} {...props}/>}
+            />
+            <Route
+              path="/registration"
+              render={(props) => <Registration isHandlerLogin={isHandlerLogin} {...props}/>}
+            />
+          </Switch>
+        </Container>
+      </AppWrapper>
+    );
 }
 
 

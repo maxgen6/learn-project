@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {FormBlock} from "../blocks/FormBlock";
 import {Input} from "../blocks/Input";
 import {LargeButton} from "../blocks/Button";
@@ -11,40 +11,32 @@ const styles = {
 
 const {url} = api
 
-export default function Login() {
+export default function Login(props) {
   // state = {
+  //   email: '',
   //   password: ''
   // }
 
-  const [email, setEmail] = useState('')
+  const [loginCreeds, setLoginCreeds] = useState({})
 
-  const [password, setPassword] = useState('')
-  const [loginCreads, setLoginCreads] = useState({})
-
-  const handleChangeLoginCreads = e => {
-    e.preventDefault()
-    loginCreads[e.target.name] = e.target.value
+  const handlerLoginCreeds = e => {
+    loginCreeds[e.target.name] = e.target.value
   }
 
-  const inputLogin = useCallback(e => {
-    e.preventDefault()
-    setEmail({email: e.target.value})
-  }, [email])
-
-  const inputPassword = useCallback(e => {
-    e.preventDefault()
-    setPassword({password: e.target.value})
-  }, [password])
-
-
-
+  // inputLogin = e => {
+  //   e.preventDefault()
+  //   this.setState({ email: e.target.value})
+  // }
+  //
+  // inputPassword = e => {
+  //   e.preventDefault()
+  //   this.setState({ password: e.target.value})
+  // }
 
   const isLogin = e => {
     e.preventDefault()
-    console.log(1)
-    console.log(this)
-    const email = loginCreads.email
-    const password = loginCreads.password
+    const email = loginCreeds.email
+    const password = loginCreeds.password
 
     if (email && password.length > 5) {
       const user = {
@@ -53,31 +45,30 @@ export default function Login() {
       }
       axios.post(`${url}/signin`, user)
         .then(res => {
-          this.props.isHandlerLogin()
-          this.props.history.push('/')
+          props.isHandlerLogin()
+          props.history.push('/')
         })
         .catch(err => {
-          console.log(err)
-          if ((err.response.status === 400) || (err.response.status === 500)) {
+          if((err.response.status === 400) || (err.response.status === 500)) {
             alert('Неправильные логин или пароль!')
           }
         })
-        .finally(() => setLoginCreads({}))
+        .finally(() => setLoginCreeds({}))
     }
   }
 
-  return (
-    <FormBlock type="submit" onSubmit={isLogin}>
-      <h2>Добро пожаловать!</h2>
-      <label htmlFor="email">
-        <span>email</span>
-        <Input placeholder="email" name="email" styles={styles} type="email" onChange={handleChangeLoginCreads}/>
-      </label>
-      <label htmlFor="password">
-        <span>password</span>
-        <Input placeholder="password" name="password" styles={styles} type="password" onChange={handleChangeLoginCreads}/>
-      </label>
-      <LargeButton forms={+true}>Войти</LargeButton>
-    </FormBlock>
-  );
+    return (
+      <FormBlock type="submit" onSubmit={isLogin}>
+        <h2>Добро пожаловать!</h2>
+        <label htmlFor="email">
+          <span>email</span>
+          <Input placeholder="email" name="email" styles={styles} type="email" onChange={handlerLoginCreeds}/>
+        </label>
+        <label htmlFor="password">
+          <span>password</span>
+          <Input placeholder="password" name="password" styles={styles} type="password" onChange={handlerLoginCreeds}/>
+        </label>
+        <LargeButton forms={+true} >Войти</LargeButton>
+      </FormBlock>
+    );
 }
